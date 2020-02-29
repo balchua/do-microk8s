@@ -52,3 +52,10 @@ variable "cluster_name" {
   type = "string"
   default = "cetacean"
 }
+
+variable "microk8s_channel" {
+  type = "string"
+  default = "stable"
+  default = "The MicroK8s channel to use"
+}
+

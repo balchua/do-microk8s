@@ -24,6 +24,9 @@ resource "digitalocean_tag" "microk8s-worker" {
 # master node user-config
 data "template_file" "worker_node_config" {
   template = file("${path.module}/templates/worker.yaml.tmpl")
+  vars = {
+    microk8s_channel = "${var.microk8s_channel}"
+  }  
 }
 
 

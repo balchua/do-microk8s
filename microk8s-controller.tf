@@ -1,3 +1,10 @@
+resource "digitalocean_volume" "microk8s-controller" {
+  region                  = "${var.region}"
+  name                    = "microk8s-controller-fs"
+  size                    = ${var.controller_disksize}
+  description             = "A volume to attach to the controller.  Can be used for Rook Ceph"
+}
+
 resource "digitalocean_droplet" "microk8s-controller" {
   image              = "${var.os_image}"
   name               = "microk8s-controller-${var.cluster_name}"
@@ -15,6 +22,11 @@ resource "digitalocean_droplet" "microk8s-controller" {
 
   user_data = data.template_file.controller_node_config.rendered
 
+}
+
+resource "digitalocean_volume_attachment" "microk8s-controller" {
+  droplet_id = digitalocean_droplet.microk8s-controller.id
+  volume_id  = digitalocean_volume.microk8s-controller.id
 }
 
 # Tag to label controllers
@@ -72,3 +84,5 @@ resource "digitalocean_record" "microk8s-controller" {
   # private IPv4 address for etcd
   value = "${digitalocean_droplet.microk8s-controller.ipv4_address}"
 }
+
+

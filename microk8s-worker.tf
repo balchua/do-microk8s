@@ -1,3 +1,10 @@
+resource "digitalocean_volume" "microk8s-worker" {
+  region                  = "${var.region}"
+  name                    = "microk8s-worker-fs"
+  size                    = ${var.worker_disksize}
+  description             = "A volume to attach to the worker.  Can be used for Rook Ceph"
+}
+
 resource "digitalocean_droplet" "microk8s-worker" {
   image              = "${var.os_image}"
   name               = "microk8s-worker-${var.cluster_name}-${count.index}"
@@ -14,6 +21,12 @@ resource "digitalocean_droplet" "microk8s-worker" {
     var.digitalocean_ssh_fingerprint,
   ]
   user_data = element(data.template_file.worker_node_config.*.rendered, count.index)
+}
+
+#Volume attachment to the droplet.
+resource "digitalocean_volume_attachment" "microk8s-worker" {
+  droplet_id = digitalocean_droplet.microk8s-worker.id
+  volume_id  = digitalocean_volume.microk8s-worker.id
 }
 
 # Tag to label controllers

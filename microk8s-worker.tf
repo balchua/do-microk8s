@@ -1,7 +1,7 @@
 resource "digitalocean_volume" "microk8s-worker" {
   region                  = "${var.region}"
   name                    = "microk8s-worker-fs"
-  size                    = ${var.worker_disksize}
+  size                    = "${var.worker_disksize}"
   description             = "A volume to attach to the worker.  Can be used for Rook Ceph"
 }
 

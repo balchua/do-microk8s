@@ -1,7 +1,7 @@
 resource "digitalocean_volume" "microk8s-controller" {
   region                  = "${var.region}"
   name                    = "microk8s-controller-fs"
-  size                    = ${var.controller_disksize}
+  size                    = "${var.controller_disksize}"
   description             = "A volume to attach to the controller.  Can be used for Rook Ceph"
 }
 

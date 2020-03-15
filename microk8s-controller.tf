@@ -23,7 +23,7 @@ resource "digitalocean_droplet" "microk8s-controller" {
 
   user_data = data.template_file.controller_node_config.rendered
 
-  volume_ids = ["${element(digitalocean_volume.microk8s-controller.*.id, count.index)}"]
+  volume_ids = ["${element(digitalocean_volume.microk8s-controller.*.id, 1)}"]
 }
 
 

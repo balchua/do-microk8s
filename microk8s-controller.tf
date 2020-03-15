@@ -1,6 +1,7 @@
 resource "digitalocean_volume" "microk8s-controller" {
   region                  = "${var.region}"
   name                    = "microk8s-controller-fs"
+  count                   = "1"
   size                    = "${var.controller_disksize}"
   description             = "A volume to attach to the controller.  Can be used for Rook Ceph"
 }
@@ -22,12 +23,10 @@ resource "digitalocean_droplet" "microk8s-controller" {
 
   user_data = data.template_file.controller_node_config.rendered
 
+  volume_ids = ["${element(digitalocean_volume.microk8s-controller.*.id, count.index)}"]
 }
 
-resource "digitalocean_volume_attachment" "microk8s-controller" {
-  droplet_id = digitalocean_droplet.microk8s-controller.id
-  volume_id  = digitalocean_volume.microk8s-controller.id
-}
+
 
 # Tag to label controllers
 resource "digitalocean_tag" "microk8s-controller" {

@@ -25,8 +25,8 @@ resource "digitalocean_droplet" "microk8s-worker" {
 
 #Volume attachment to the droplet.
 resource "digitalocean_volume_attachment" "microk8s-worker" {
-  droplet_id = digitalocean_droplet.microk8s-worker.id
-  volume_id  = digitalocean_volume.microk8s-worker[count.index].id
+  droplet_id = digitalocean_droplet.microk8s-worker[count.index].id
+  volume_id  = digitalocean_volume.microk8s-worker.id
 }
 
 # Tag to label controllers

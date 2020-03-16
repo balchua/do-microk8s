@@ -7,6 +7,7 @@ module "microk8s" {
     worker_disksize = "100"
     region = "sgp1"
     worker_size = "s-4vcpu-8gb"
+    dns_zone = "geeks.sg"
     microk8s_channel = "1.17/stable"
     digitalocean_ssh_fingerprint = "${var.digitalocean_ssh_fingerprint}"
     digitalocean_private_key = "${var.digitalocean_private_key}"

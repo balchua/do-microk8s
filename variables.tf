@@ -20,7 +20,7 @@ variable "worker_node_count" {
 
 variable "dns_zone" {
   type        = string
-  default     = "geek.per.sg"
+  default     = "geeks.sg"
   description = "Dns for all ingress"
 }
 

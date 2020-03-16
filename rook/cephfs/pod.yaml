@@ -1,0 +1,23 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: csicephfs-demo-pod
+spec:
+  containers:
+   - name: busybox
+     image: busybox
+     command: [ "tail", "-f", "/dev/null" ]
+     volumeMounts:
+     - name: mypvc
+       mountPath: /data
+     resources:
+         limits:
+           cpu: 8m
+           memory: 10Mi
+  terminationGracePeriodSeconds: 3
+  volumes:
+   - name: mypvc
+     persistentVolumeClaim:
+       claimName: cephfs-pvc
+       readOnly: false

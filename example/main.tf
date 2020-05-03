@@ -8,9 +8,12 @@ module "microk8s" {
     region = "sgp1"
     worker_size = "s-4vcpu-8gb"
     dns_zone = "geeks.sg"
-    microk8s_channel = "1.17/stable"
+    microk8s_channel = "edge"
+    cluster-token = "PoiuyTrewQasdfghjklMnbvcxz123409"
+    cluster-token-ttl-seconds = 3600    
     digitalocean_ssh_fingerprint = "${var.digitalocean_ssh_fingerprint}"
     digitalocean_private_key = "${var.digitalocean_private_key}"
     digitalocean_token = "${var.digitalocean_token}"
     digitalocean_pub_key = "${var.digitalocean_pub_key}"
+
 }

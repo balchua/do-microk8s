@@ -54,9 +54,7 @@ resource "null_resource" "setup_tokens" {
     provisioner "remote-exec" {
         inline = [
             "until /snap/bin/microk8s.status --wait-ready; do sleep 1; echo \"waiting for status..\"; done",
-            "touch /var/snap/microk8s/current/credentials/cluster-tokens.txt",
-            "echo \"${var.cluster-token}\"-\"${count.index}\" >> /var/snap/microk8s/current/credentials/cluster-tokens.txt",
-              
+            "/snap/bin/microk8s.add-node --token \"${var.cluster-token}\" --token-ttl \"${var.cluster-token-ttl}",
         ]
     }
 }

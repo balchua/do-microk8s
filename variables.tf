@@ -12,6 +12,12 @@ variable "cluster-token" {
     description = "The cluster token to use to join a node."
 }
 
+variable "cluster-token-ttl-seconds" {
+    type    = number
+    default = 3600
+    description = "The cluster token ttl to use when joining a node, default 3600 seconds."
+}
+
 variable "worker_node_count" {
   type        = number
   default     = 3

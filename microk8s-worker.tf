@@ -54,7 +54,7 @@ resource "null_resource" "join_nodes" {
     provisioner "remote-exec" {
         inline = [
             "until /snap/bin/microk8s.status --wait-ready; do sleep 1; echo \"waiting for status..\"; done",
-            "/snap/bin/microk8s.join ${digitalocean_droplet.microk8s-controller.ipv4_address_private}:25000/${var.cluster-token}-${count.index}",
+            "/snap/bin/microk8s.join ${digitalocean_droplet.microk8s-controller.ipv4_address_private}:25000/${var.cluster-token}",
         ]
     }
 }

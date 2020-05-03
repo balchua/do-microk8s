@@ -54,6 +54,7 @@ resource "null_resource" "setup_tokens" {
     provisioner "remote-exec" {
         inline = [
             "until /snap/bin/microk8s.status --wait-ready; do sleep 1; echo \"waiting for status..\"; done",
+            "/snap/bin/microk8s.kubectl label node ${digitalocean_droplet.microk8s-controller.name} node-role.kubernetes.io/master=master",            
             "/snap/bin/microk8s.add-node --token \"${var.cluster_token}\" --token-ttl ${var.cluster_token_ttl_seconds}",
             "/snap/bin/microk8s.config > /client.config",
         ]

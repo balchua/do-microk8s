@@ -9,6 +9,11 @@ variable "digitalocean_private_key" {}
 variable "cluster_token" {
     type    = "string"
     description = "The cluster token to use to join a node."
+  
+  validation {
+    condition     = length(var.cluster_token) < 32
+    error_message = "The cluster_token value must be 32 alphanumeric long."
+  }    
 }
 
 variable "cluster_token_ttl_seconds" {

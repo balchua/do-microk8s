@@ -53,9 +53,9 @@ resource "null_resource" "join_nodes" {
 
     provisioner "remote-exec" {
         inline = [
-            "until /snap/bin/microk8s.status --wait-ready; do sleep 1; echo \"waiting for status..\"; done",
+            "until /snap/bin/microk8s.status --wait-ready; do sleep 1; echo \"waiting for worker status..\"; done",
             "/snap/bin/microk8s.join ${digitalocean_droplet.microk8s-controller.ipv4_address_private}:25000/${var.cluster_token}",
-            "until /snap/bin/microk8s.status --wait-ready; do sleep 1; echo \"waiting for status..\"; done",
+            "until /snap/bin/microk8s.status --wait-ready; do sleep 1; echo \"waiting for worker status..\"; done",
             "/snap/bin/microk8s.kubectl label node ${digitalocean_droplet.microk8s-controller.ipv4_address_private} node-role.kubernetes.io/worker=worker",
         ]
     }

@@ -8,7 +8,6 @@ variable "digitalocean_private_key" {}
 
 variable "cluster-token" {
     type    = "string"
-    default = "VSF6JF49IPOZCXR6KEN6"
     description = "The cluster token to use to join a node."
 }
 

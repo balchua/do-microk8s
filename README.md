@@ -29,6 +29,9 @@ module "microk8s" {
 }
 
 ```
+
+**The `cluster_token` must be 32 alphanumeric characters long.**
+
 ## Digitalocean TF environment variables
 
 You must have these environment variables present.

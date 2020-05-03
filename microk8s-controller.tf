@@ -42,7 +42,6 @@ data "template_file" "controller_node_config" {
 }
 
 resource "null_resource" "setup_tokens" {
-    count = "${var.worker_node_count}"
     connection {
         host        = "${digitalocean_droplet.microk8s-controller.ipv4_address}"
         user        = "root"

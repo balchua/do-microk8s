@@ -55,6 +55,7 @@ resource "null_resource" "setup_tokens" {
         inline = [
             "until /snap/bin/microk8s.status --wait-ready; do sleep 1; echo \"waiting for status..\"; done",
             "/snap/bin/microk8s.add-node --token \"${var.cluster_token}\" --token-ttl ${var.cluster_token_ttl_seconds}",
+            "/snap/bin/microk8s.config > /client.config",
         ]
     }
 }
@@ -64,7 +65,7 @@ resource "null_resource" "get_kubeconfig" {
     depends_on = [null_resource.setup_tokens]    
 
     provisioner "local-exec" {
-        command = "scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${var.digitalocean_private_key}  root@${digitalocean_droplet.microk8s-controller.ipv4_address}:/var/snap/microk8s/current/credentials/client.config /tmp/"
+        command = "scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ${var.digitalocean_private_key}  root@${digitalocean_droplet.microk8s-controller.ipv4_address}:/client.config /tmp/"
     }
 }
 

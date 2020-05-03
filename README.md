@@ -6,7 +6,7 @@ Bootstrap a multi node Microk8s in digitalocean with Terraform.
 
 For example to bootstrap 1 controller and 1 worker.
 
-```yaml
+```hcl
 
 module "microk8s" {
     source = "git::https://github.com/balchua/do-microk8s"
@@ -16,15 +16,16 @@ module "microk8s" {
     controller_disksize = "100"
     worker_disksize = "100"
     region = "sgp1"
-    cluster-token = "1q3e2W6y5t4r88GhjnbFw6oP0FqZlR8X"
-    cluster-token-ttl-seconds = 3600     
     worker_size = "s-4vcpu-8gb"
     dns_zone = "geeks.sg"
     microk8s_channel = "edge"
+    cluster_token = "PoiuyTrewQasdfghjklMnbvcxz123409"
+    cluster_token_ttl_seconds = 3600    
     digitalocean_ssh_fingerprint = "${var.digitalocean_ssh_fingerprint}"
     digitalocean_private_key = "${var.digitalocean_private_key}"
     digitalocean_token = "${var.digitalocean_token}"
     digitalocean_pub_key = "${var.digitalocean_pub_key}"
+
 }
 
 ```
@@ -52,9 +53,11 @@ Login to the `master` node using `ssh root@masterip`, then issue the command bel
 ```shell
 
 root@microk8s-controller-cetacean:~# microk8s.kubectl get no
-NAME                           STATUS   ROLES    AGE   VERSION
-10.130.123.80                  Ready    <none>   42s   v1.17.2
-microk8s-controller-cetacean   Ready    <none>   67s   v1.17.2
+NAME                           STATUS   ROLES    AGE     VERSION
+10.130.111.105                 Ready    <none>   2m30s   v1.18.2-41+afcc98bc789924
+10.130.82.34                   Ready    <none>   2m20s   v1.18.2-41+afcc98bc789924
+microk8s-controller-cetacean   Ready    <none>   2m39s   v1.18.2-41+afcc98bc789924
+
 ```
 
 ## Downloading Kube config file

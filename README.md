@@ -1,5 +1,7 @@
 # Digitalocean Terraform Microk8s
 
+**This currently works for `edge` channel, as the token generation is not yet merged with the latest stable Microk8s version.**
+
 Bootstrap a multi node Microk8s in digitalocean with Terraform.
 
 For example to bootstrap 1 controller and 1 worker.
@@ -14,9 +16,11 @@ module "microk8s" {
     controller_disksize = "100"
     worker_disksize = "100"
     region = "sgp1"
+    cluster-token = "1q3e2W6y5t4r88GhjnbFw6oP0FqZlR8X"
+    cluster-token-ttl-seconds = 3600     
     worker_size = "s-4vcpu-8gb"
     dns_zone = "geeks.sg"
-    microk8s_channel = "1.17/stable"
+    microk8s_channel = "edge"
     digitalocean_ssh_fingerprint = "${var.digitalocean_ssh_fingerprint}"
     digitalocean_private_key = "${var.digitalocean_private_key}"
     digitalocean_token = "${var.digitalocean_token}"
@@ -52,6 +56,18 @@ NAME                           STATUS   ROLES    AGE   VERSION
 10.130.123.80                  Ready    <none>   42s   v1.17.2
 microk8s-controller-cetacean   Ready    <none>   67s   v1.17.2
 ```
+
+## Downloading Kube config file
+
+The module automatically downloads the kubeconfig file to your local machine in `/tmp/client.config`
+In order to access the Kubernetes cluster from your local machine.
+Change the API server IP to the one exposed by Digitalocean droplet.
+
+For example, you control plane machine IP is `167.71.207.166`
+
+Then you can do this from the command line.
+
+`sed -i 's/127.0.0.1/167.71.207.166/g' /tmp/client.config`
 
 ## Digitalocean attached volume
 

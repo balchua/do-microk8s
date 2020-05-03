@@ -54,7 +54,7 @@ resource "null_resource" "setup_tokens" {
     provisioner "remote-exec" {
         inline = [
             "until /snap/bin/microk8s.status --wait-ready; do sleep 1; echo \"waiting for status..\"; done",
-            "/snap/bin/microk8s.add-node --token \"${var.cluster-token}\" --token-ttl ${var.cluster-token-ttl-seconds}",
+            "/snap/bin/microk8s.add-node --token \"${var.cluster_token}\" --token-ttl ${var.cluster_token_ttl_seconds}",
         ]
     }
 }

@@ -6,12 +6,12 @@ variable "digitalocean_pub_key" {}
 
 variable "digitalocean_private_key" {}
 
-variable "cluster-token" {
+variable "cluster_token" {
     type    = "string"
     description = "The cluster token to use to join a node."
 }
 
-variable "cluster-token-ttl-seconds" {
+variable "cluster_token_ttl_seconds" {
     type    = number
     default = 3600
     description = "The cluster token ttl to use when joining a node, default 3600 seconds."

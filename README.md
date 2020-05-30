@@ -1,8 +1,8 @@
-# Digitalocean Terraform Microk8s
+# DigitalOcean Terraform Microk8s
 
-**This currently works for `edge` channel, as the token generation is not yet merged with the latest stable Microk8s version.**
+**This currently works for `latest/stable` channel, as the token generation is not yet merged with the latest stable Microk8s version.**
 
-Bootstrap a multi node Microk8s in digitalocean with Terraform.
+Bootstrap a multi node Microk8s in DigitalOcean with Terraform.
 
 For example to bootstrap 1 controller and 1 worker.
 
@@ -18,7 +18,7 @@ module "microk8s" {
     region = "sgp1"
     worker_size = "s-4vcpu-8gb"
     dns_zone = "geeks.sg"
-    microk8s_channel = "edge"
+    microk8s_channel = "latest/stable"
     cluster_token = "PoiuyTrewQasdfghjklMnbvcxz123409"
     cluster_token_ttl_seconds = 3600    
     digitalocean_ssh_fingerprint = "${var.digitalocean_ssh_fingerprint}"
@@ -32,7 +32,7 @@ module "microk8s" {
 
 **The `cluster_token` must be 32 alphanumeric characters long.**
 
-## Digitalocean TF environment variables
+## DigitalOcean TF environment variables
 
 You must have these environment variables present.
 

@@ -9,3 +9,4 @@ variable "digitalocean_pub_key" {
 
 variable "digitalocean_private_key" {
 }
+

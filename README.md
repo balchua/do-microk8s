@@ -1,10 +1,10 @@
-# Digitalocean Terraform Microk8s
+# DigitalOcean Terraform MicroK8s
 
-**This currently works for `edge` channel, as the token generation is not yet merged with the latest stable Microk8s version.**
+**This currently works for `latest/edge/ha-preview` channel, HA is still in Preview mode.**
 
-Bootstrap a multi node Microk8s in digitalocean with Terraform.
+Bootstrap a Highly Available MicroK8s cluster in DigitalOcean with Terraform.
 
-For example to bootstrap 1 controller and 1 worker.
+For example to bootstrap 1 main node and 1 worker.
 
 ```hcl
 
@@ -18,7 +18,7 @@ module "microk8s" {
     region = "sgp1"
     worker_size = "s-4vcpu-8gb"
     dns_zone = "geeks.sg"
-    microk8s_channel = "edge"
+    microk8s_channel = "latest/edge/ha-preview"
     cluster_token = "PoiuyTrewQasdfghjklMnbvcxz123409"
     cluster_token_ttl_seconds = 3600    
     digitalocean_ssh_fingerprint = "${var.digitalocean_ssh_fingerprint}"

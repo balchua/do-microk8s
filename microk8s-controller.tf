@@ -1,16 +1,16 @@
 resource "digitalocean_volume" "microk8s-controller" {
-  region                  = "${var.region}"
+  region                  = var.region
   name                    = "microk8s-controller-fs"
   count                   = "1"
-  size                    = "${var.controller_disksize}"
+  size                    = var.controller_disksize
   description             = "A volume to attach to the controller.  Can be used for Rook Ceph"
 }
 
 resource "digitalocean_droplet" "microk8s-controller" {
-  image              = "${var.os_image}"
+  image              = var.os_image
   name               = "microk8s-controller-${var.cluster_name}"
-  region             = "${var.region}"
-  size               = "${var.controller_size}"
+  region             = var.region
+  size               = var.controller_size
   private_networking = true
 
   ssh_keys = [
@@ -42,8 +42,9 @@ data "template_file" "controller_node_config" {
 }
 
 resource "null_resource" "setup_tokens" {
+    depends_on = [null_resource.provision_controlplane_hosts_file, null_resource.provision_worker_hosts_file]    
     connection {
-        host        = "${digitalocean_droplet.microk8s-controller.ipv4_address}"
+        host        = digitalocean_droplet.microk8s-controller.ipv4_address
         user        = "root"
         type        = "ssh"
         private_key = file(var.digitalocean_private_key)
@@ -53,7 +54,7 @@ resource "null_resource" "setup_tokens" {
     provisioner "remote-exec" {
         inline = [
             "until /snap/bin/microk8s.status --wait-ready; do sleep 1; echo \"waiting for status..\"; done",
-            "/snap/bin/microk8s.kubectl label node ${digitalocean_droplet.microk8s-controller.name} node-role.kubernetes.io/master=master",            
+            "while true; do READY=$(/snap/bin/microk8s kubectl get no | grep \"NotReady\" | wc -l); if [ $READY -gt 0 ]; then  echo \"Waiting for node to be ready.\"; sleep 2; else break; fi done;",
             "/snap/bin/microk8s.add-node --token \"${var.cluster_token}\" --token-ttl ${var.cluster_token_ttl_seconds}",
             "/snap/bin/microk8s.config > /client.config",
         ]
@@ -80,7 +81,7 @@ resource "digitalocean_record" "microk8s-controller" {
   ttl  = 300
 
   # private IPv4 address for etcd
-  value = "${digitalocean_droplet.microk8s-controller.ipv4_address}"
+  value = digitalocean_droplet.microk8s-controller.ipv4_address
 }
 
 

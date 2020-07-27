@@ -1,17 +1,17 @@
 resource "digitalocean_volume" "microk8s-worker" {
-  region                  = "${var.region}"
-  count                   = "${var.worker_node_count}"
+  region                  = var.region
+  count                   = var.worker_node_count
   name                    = "microk8s-worker-fs-${count.index}"
-  size                    = "${var.worker_disksize}"
+  size                    = var.worker_disksize
   description             = "A volume to attach to the worker.  Can be used for Rook Ceph"
 }
 
 resource "digitalocean_droplet" "microk8s-worker" {
-  image              = "${var.os_image}"
+  image              = var.os_image
   name               = "microk8s-worker-${var.cluster_name}-${count.index}"
-  region             = "${var.region}"
-  size               = "${var.worker_size}"
-  count              = "${var.worker_node_count}"
+  region             = var.region
+  size               = var.worker_size
+  count              = var.worker_node_count
   private_networking = true
 
  tags = [
@@ -41,19 +41,20 @@ data "template_file" "worker_node_config" {
 
 
 resource "null_resource" "join_nodes" {
-    count           = "${var.worker_node_count}"
+    count           = var.worker_node_count
     depends_on      = [null_resource.setup_tokens]
     connection {
-        host        = "${element(digitalocean_droplet.microk8s-worker.*.ipv4_address, count.index)}"
+        host        = element(digitalocean_droplet.microk8s-worker.*.ipv4_address, count.index)
         user        = "root"
         type        = "ssh"
         private_key = file(var.digitalocean_private_key)
-        timeout     = "10m"
+        timeout     = "20m"
     }      
 
     provisioner "remote-exec" {
         inline = [
             "until /snap/bin/microk8s.status --wait-ready; do sleep 1; echo \"waiting for worker status..\"; done",
+            "while true; do READY=$(/snap/bin/microk8s kubectl get no | grep \"NotReady\" | wc -l); if [ $READY -gt 0 ]; then  echo \"Waiting for node to be ready.\"; sleep 2; else break; fi done;",            
             "/snap/bin/microk8s.join ${digitalocean_droplet.microk8s-controller.ipv4_address_private}:25000/${var.cluster_token}",
         ]
     }
@@ -62,7 +63,7 @@ resource "null_resource" "join_nodes" {
 
 # Discrete DNS records for each controller's private IPv4 for ingress usage
 resource "digitalocean_record" "microk8s-worker" {
-  count           = "${var.worker_node_count}"
+  count           = var.worker_node_count
   # DNS zone where record should be created
   domain = var.dns_zone
 

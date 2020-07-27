@@ -7,7 +7,7 @@ variable "digitalocean_pub_key" {}
 variable "digitalocean_private_key" {}
 
 variable "cluster_token" {
-    type    = "string"
+    type    = string
     description = "The cluster token to use to join a node.  Must be 32 alphanumeric long." 
 }
 
@@ -30,48 +30,48 @@ variable "dns_zone" {
 }
 
 variable "os_image" {
-    type    = "string"
+    type    = string
     default = "ubuntu-18-04-x64"
     description = "The operating system slug name in Digitalocean."
 }
 
 variable "region" {
-    type    = "string"
+    type    = string
     default = "sgp1"
     description = "The region where the droplets will be hosted."
 }
 
 variable "controller_size" {
-    type    = "string"
+    type    = string
     default = "s-4vcpu-8gb"
     description = "The size of the controller droplet."
 }
 
 variable "controller_disksize" {
-    type    = "string"
+    type    = string
     default = "100"
     description = "The size of the controller storage."
 }
 
 variable "worker_size" {
-    type    = "string"
+    type    = string
     default = "s-4vcpu-8gb"
     description = "The size of the worker droplet."
 }
 
 variable "worker_disksize" {
-    type    = "string"
+    type    = string
     default = "100"
     description = "The size of the worker storage."
 }
 
 variable "cluster_name" {
-  type = "string"
+  type = string
   default = "cetacean"
 }
 
 variable "microk8s_channel" {
-  type = "string"
+  type = string
   default = "stable"
   description = "The MicroK8s channel to use"
 }

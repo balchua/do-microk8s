@@ -15,7 +15,7 @@ resource "digitalocean_droplet" "microk8s-worker" {
   private_networking = true
 
  tags = [
-    digitalocean_tag.microk8s-worker.id,
+    digitalocean_tag.microk8s-worker.id, digitalocean_tag.microk8s-controlplane.id
   ]
 
   ssh_keys = [
@@ -54,7 +54,9 @@ resource "null_resource" "join_nodes" {
     provisioner "remote-exec" {
         inline = [
             "until /snap/bin/microk8s.status --wait-ready; do sleep 1; echo \"waiting for worker status..\"; done",
-            "while true; do READY=$(/snap/bin/microk8s kubectl get no | grep \"NotReady\" | wc -l); if [ $READY -gt 0 ]; then  echo \"Waiting for node to be ready.\"; sleep 2; else break; fi done;",            
+            "echo 'adding microk8s-cluster.${var.dns_zone} dns to CSR.'; sed -i 's@#MOREIPS@DNS.99 = microk8s-cluster.${var.dns_zone}\\n#MOREIPS\\n@g' /var/snap/microk8s/current/certs/csr.conf.template; echo 'done.'",
+            "sleep 10",            
+            #"while true; do READY=$(/snap/bin/microk8s kubectl get no | grep \"NotReady\" | wc -l); if [ $READY -gt 0 ]; then  echo \"Waiting for node to be ready.\"; sleep 2; else break; fi done;",            
             "/snap/bin/microk8s.join ${digitalocean_droplet.microk8s-controller.ipv4_address_private}:25000/${var.cluster_token}",
         ]
     }

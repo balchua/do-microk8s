@@ -9,23 +9,22 @@ For example to bootstrap 1 main node and 1 worker.
 ```hcl
 
 module "microk8s" {
-    source = "git::https://github.com/balchua/do-microk8s"
-    worker_node_count = "2"
-    os_image = "ubuntu-18-04-x64"
-    controller_size = "s-4vcpu-8gb"
-    controller_disksize = "100"
-    worker_disksize = "100"
-    region = "sgp1"
-    worker_size = "s-4vcpu-8gb"
-    dns_zone = "geeks.sg"
-    microk8s_channel = "latest/edge/ha-preview"
-    cluster_token = "PoiuyTrewQasdfghjklMnbvcxz123409"
-    cluster_token_ttl_seconds = 3600    
-    digitalocean_ssh_fingerprint = "${var.digitalocean_ssh_fingerprint}"
-    digitalocean_private_key = "${var.digitalocean_private_key}"
-    digitalocean_token = "${var.digitalocean_token}"
-    digitalocean_pub_key = "${var.digitalocean_pub_key}"
-
+  source = "git::https://github.com/balchua/do-microk8s"
+  worker_node_count            = "2"
+  os_image                     = "ubuntu-18-04-x64"
+  controller_size              = "s-4vcpu-8gb"
+  controller_disksize          = "50"
+  worker_disksize              = "50"
+  region                       = "sgp1"
+  worker_size                  = "s-4vcpu-8gb"
+  dns_zone                     = "geeks.sg"
+  microk8s_channel             = "latest/edge/ha-preview"
+  cluster_token                = "PoiuyTrewQasdfghjklMnbvcxz123409"
+  cluster_token_ttl_seconds    = 3600
+  digitalocean_ssh_fingerprint = var.digitalocean_ssh_fingerprint
+  digitalocean_private_key     = var.digitalocean_private_key
+  digitalocean_token           = var.digitalocean_token
+  digitalocean_pub_key         = var.digitalocean_pub_key
 }
 
 ```
@@ -51,29 +50,33 @@ Simply run the `terraform plan` and then `terraform apply`
 
 Once terraform completes, you should be able to see the cluster.
 
-Login to the `master` node using `ssh root@masterip`, then issue the command below.
+Login to the `controller` node using `ssh root@controller`, then issue the command below.
 
 ```shell
 
 root@microk8s-controller-cetacean:~# microk8s.kubectl get no
 NAME                           STATUS   ROLES    AGE     VERSION
-10.130.111.105                 Ready    <none>   2m30s   v1.18.2-41+afcc98bc789924
-10.130.82.34                   Ready    <none>   2m20s   v1.18.2-41+afcc98bc789924
-microk8s-controller-cetacean   Ready    <none>   2m39s   v1.18.2-41+afcc98bc789924
+microk8s-controller-cetacean   Ready    <none>   4m14s   v1.18.6-33+f8f2b0e0649c65
+microk8s-worker-cetacean-0     Ready    <none>   2m7s    v1.18.6-33+f8f2b0e0649c65
+microk8s-worker-cetacean-1     Ready    <none>   2m4s    v1.18.6-33+f8f2b0e0649c65
 
 ```
 
 ## Downloading Kube config file
 
 The module automatically downloads the kubeconfig file to your local machine in `/tmp/client.config`
-In order to access the Kubernetes cluster from your local machine.
-Change the API server IP to the one exposed by Digitalocean droplet.
+In order to access the Kubernetes cluster from your local machine, simple do `export KUBECONFIG=/tmp/client.config`
 
-For example, you control plane machine IP is `167.71.207.166`
+This will connect using the load balancer fronting the api servers.  The dns entry will be `microk8s-cluster.<domain name>`
 
-Then you can do this from the command line.
+Example:
+`microk8s-cluster.geeks.sg`
 
-`sed -i 's/127.0.0.1/167.71.207.166/g' /tmp/client.config`
+## MicroK8s High Availability
+It requires node counts to be greater than or equal to 3 to form a majority.  Each node can be a control plane, hence there is really no concept of control plane.
+
+Check documentation on [MicroK8s Discuss HA](https://discuss.kubernetes.io/t/high-availability-ha/11731)
+
 
 ## Digitalocean attached volume
 

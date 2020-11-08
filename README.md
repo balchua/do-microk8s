@@ -1,6 +1,6 @@
 # DigitalOcean Terraform MicroK8s
 
-**This currently works for `latest/edge/ha-preview` channel, HA is still in Preview mode.**
+**This is using the `latest/edge` channel with the HA enabled**
 
 Bootstrap a Highly Available MicroK8s cluster in DigitalOcean with Terraform.
 

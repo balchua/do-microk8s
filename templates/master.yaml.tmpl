@@ -20,6 +20,10 @@ package_update: true
 packages:
 - nfs-kernel-server
 - bridge-utils
+- open-iscsi
+
+runcmd:
+  - [ systemctl, start, iscsid ]
 
 snap:
     commands:

@@ -22,7 +22,7 @@ resource "digitalocean_droplet" "microk8s-worker" {
     var.digitalocean_ssh_fingerprint,
   ]
   user_data = element(data.template_file.worker_node_config.*.rendered, count.index)
-  volume_ids = ["${element(digitalocean_volume.microk8s-worker.*.id, count.index)}"]
+  volume_ids = [element(digitalocean_volume.microk8s-worker.*.id, count.index)]
   
 }
 
@@ -35,7 +35,7 @@ resource "digitalocean_tag" "microk8s-worker" {
 data "template_file" "worker_node_config" {
   template = file("${path.module}/templates/worker.yaml.tmpl")
   vars = {
-    microk8s_channel = "${var.microk8s_channel}"
+    microk8s_channel = var.microk8s_channel
   }  
 }
 

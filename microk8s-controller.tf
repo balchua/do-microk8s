@@ -23,7 +23,7 @@ resource "digitalocean_droplet" "microk8s-controller" {
 
   user_data = data.template_file.controller_node_config.rendered
 
-  volume_ids = ["${element(digitalocean_volume.microk8s-controller.*.id, 1)}"]
+  volume_ids = [element(digitalocean_volume.microk8s-controller.*.id, 1)]
 }
 
 
@@ -42,7 +42,7 @@ resource "digitalocean_tag" "microk8s-controller" {
 data "template_file" "controller_node_config" {
   template = file("${path.module}/templates/master.yaml.tmpl")
   vars = {
-    microk8s_channel = "${var.microk8s_channel}"
+    microk8s_channel = var.microk8s_channel
   }
 }
 

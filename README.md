@@ -11,7 +11,7 @@ For example to bootstrap 1 main node and 1 worker.
 ```hcl
 
 module "microk8s" {
-  source = "git::https://github.com/balchua/do-microk8s"
+  source = "git::https://github.com/balchua/do-microk8s?ref=v0.1.0"
   worker_node_count            = "2"
   os_image                     = "ubuntu-18-04-x64"
   controller_size              = "s-4vcpu-8gb"

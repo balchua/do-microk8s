@@ -1,6 +1,6 @@
 module "microk8s" {
-  #source = "git::https://github.com/balchua/do-microk8s"
-  source                       = "../"
+  source = "git::https://github.com/balchua/do-microk8s?ref=v0.1.0"
+  #source                       = "../"
   worker_node_count            = "2"
   os_image                     = "ubuntu-20-04-x64"
   controller_size              = "s-2vcpu-4gb"

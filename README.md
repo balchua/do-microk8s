@@ -189,13 +189,14 @@ _[Longhorn](https://longhorn.io/docs/1.0.2/what-is-longhorn/) is a lightweight, 
 ## Pre-requisites
 
 1.  https://longhorn.io/docs/1.0.2/deploy/install/#installation-requirements
-2.  Enable dns addon `microk8s enable dns`
-3.  Enable helm3 addon `microk8s enable helm3`
+2.  Core dns addon 
+3.  Helm3 addon
+4.  Ingress addon
 
 
 ## Steps: 
 
-_Instructions taken from Longhorn [site](https://longhorn.io/docs/1.0.2/deploy/install/install-with-helm/).  Tailored with MicroK8s addons.
+_Instructions taken from Longhorn [site](https://longhorn.io/docs/1.0.2/deploy/install/install-with-helm/)._  Tailored with MicroK8s addons.
 
 1. Enable dns addon
 

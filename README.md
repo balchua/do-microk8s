@@ -346,9 +346,7 @@ spec:
   volumes:
   - name: volv
     persistentVolumeClaim:
-      claimName: longhorn-volv-pvc    
-    securityContext:
-      allowPrivilegeEscalation: false      
+      claimName: longhorn-volv-pvc         
 EOF
 ```
 

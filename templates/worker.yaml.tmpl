@@ -22,6 +22,17 @@ packages:
 - bridge-utils
 - open-iscsi
 
+disk_setup:
+  /dev/sda:
+    table_type: 'mbr'
+    overwrite: true
+fs_setup:
+  - label: data_disk
+    filesystem: ext4
+    device: /dev/sda
+mounts:
+  - ["/dev/sda", "/data-disk"]    
+  
 runcmd:
   - [ systemctl, start, iscsid ]
 

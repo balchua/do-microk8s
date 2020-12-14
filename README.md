@@ -226,7 +226,7 @@ microk8s helm3 repo update
 
 ```
 microk8s kubectl create namespace longhorn-system
-microk8s helm3 install longhorn longhorn/longhorn --namespace longhorn-system
+microk8s helm3 install longhorn longhorn/longhorn --namespace longhorn-system --set defaultSettings.defaultDataPath="/data-disk/longhorn"
 ```
 
 6.  Check all pods are `Running`
@@ -316,19 +316,21 @@ spec:
   storageClassName: longhorn
   resources:
     requests:
-      storage: 2Gi
+      storage: 10Gi
 ---
 apiVersion: v1
 kind: Pod
 metadata:
-  name: volume-test
-  namespace: default
+  name: security-context-demo
 spec:
-  restartPolicy: Always
+  securityContext:
+    runAsUser: 1000
+    runAsGroup: 3000
+    fsGroup: 2000
   containers:
-  - name: volume-test
-    image: nginx:stable-alpine
-    imagePullPolicy: IfNotPresent
+  - name: sec-ctx-demo
+    image: busybox
+    command: [ "sh", "-c", "sleep 10h" ]
     livenessProbe:
       exec:
         command:
@@ -344,7 +346,9 @@ spec:
   volumes:
   - name: volv
     persistentVolumeClaim:
-      claimName: longhorn-volv-pvc
+      claimName: longhorn-volv-pvc    
+    securityContext:
+      allowPrivilegeEscalation: false      
 EOF
 ```
 

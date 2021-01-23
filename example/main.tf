@@ -1,15 +1,15 @@
 module "microk8s" {
-  source = "git::https://github.com/balchua/do-microk8s?ref=v0.1.0"
-  #source                       = "../"
+  #source = "git::https://github.com/balchua/do-microk8s?ref=v0.1.0"
+  source                       = "../"
   worker_node_count            = "2"
   os_image                     = "ubuntu-20-04-x64"
-  controller_size              = "s-2vcpu-4gb"
+  controller_size              = "s-8vcpu-16gb"
   controller_disksize          = "50"
   worker_disksize              = "50"
-  region                       = "sgp1"
-  worker_size                  = "s-2vcpu-4gb"
+  region                       = "nyc3"
+  worker_size                  = "s-8vcpu-16gb"
   dns_zone                     = "geeks.sg"
-  microk8s_channel             = "latest/edge"
+  microk8s_channel             = "latest/edge/lite"
   cluster_token                = "PoiuyTrewQasdfghjklMnbvcxz123409"
   cluster_token_ttl_seconds    = 3600
   digitalocean_ssh_fingerprint = var.digitalocean_ssh_fingerprint

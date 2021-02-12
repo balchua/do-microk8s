@@ -1,13 +1,61 @@
-# Adding worker node only
+# Add a worker node only with MicroK8s
 
-Pre-requisite:
+This document describes the steps on how to join a worker node only into your Highly Available MicroK8s.  This has the main advantage that, you can avoid the resource overhead of the control plane.  The overhead can go up to GBs and several CPU cycles.  These cycles are best allocated to your workload instead of Kubernetes.
 
-* Load balancer to front the apiserver.
+Before you begin, you need to have the following in place:
+
 * An HA cluster, example 3 node HA MicroK8s cluster
+* Load balancer to front the apiserver.
 
-##  Setup a 3 node MicroK8s 
+##  Setup a 3 node HA MicroK8s 
 
-Follow the instructions in MicroK8s documentation on setting up an HA cluster.
+Follow the instructions in MicroK8s [documentation](https://microk8s.io/docs/high-availability).
+
+## Load balancer IP
+
+On each of your HA MicroK8s node, add the load balancer IP into the file `/var/snap/microk8s/current/certs/cs.conf.template`
+
+For example:
+
+```
+[ req ]
+default_bits = 2048
+prompt = no
+default_md = sha256
+req_extensions = req_ext
+distinguished_name = dn
+
+[ dn ]
+C = GB
+ST = Canonical
+L = Canonical
+O = Canonical
+OU = Canonical
+CN = 127.0.0.1
+
+[ req_ext ]
+subjectAltName = @alt_names
+
+[ alt_names ]
+DNS.1 = kubernetes
+DNS.2 = kubernetes.default
+DNS.3 = kubernetes.default.svc
+DNS.4 = kubernetes.default.svc.cluster
+DNS.5 = kubernetes.default.svc.cluster.local
+IP.1 = 127.0.0.1
+IP.2 = 10.152.183.1
+IP.99 = 167.172.5.46
+#MOREIPS
+
+[ v3_ext ]
+authorityKeyIdentifier=keyid,issuer:always
+basicConstraints=CA:FALSE
+keyUsage=keyEncipherment,dataEncipherment,digitalSignature
+extendedKeyUsage=serverAuth,clientAuth
+subjectAltName=@alt_names
+
+```
+Note that **IP.99 = 167.172.5.46** is the Load balancer IP
 
 ## Install MicroK8s
 
@@ -34,13 +82,16 @@ systemctl stop snap.microk8s.daemon-proxy.service
 ### Token generation and known_tokens
 
 On each worker node run the following:
+
 Example:
 
 ```
 # openssl rand -base64 32 | base64
 KzVIdjBkUWFNYStQc01xb09lMXM1VEFRUVAxSHIxQ3I5UHk5bjZiSVdidz0K
-
 ```
+_Keep the generated random string._
+
+On each of your **control plane** nodes:
 
 Edit the file `/var/snap/microk8s/current/credentials/known_tokens.csv` to add the kubelet and kube-proxy tokens:
 
@@ -56,9 +107,9 @@ Restart each control plane api server.
 ### Copy certificates to the worker node
 
 ```console
-scp root@159.65.3.42:/var/snap/microk8s/current/certs/ca.crt /tmp/ca.crt
-scp root@159.65.3.42:/var/snap/microk8s/current/credentials/kubelet.config /tmp/kubelet.config
-scp root@159.65.3.42:/var/snap/microk8s/current/credentials/proxy.config /tmp/proxy.config
+scp root@controlplanenode:/var/snap/microk8s/current/certs/ca.crt /tmp/ca.crt
+scp root@controlplanenode:/var/snap/microk8s/current/credentials/kubelet.config /tmp/kubelet.config
+scp root@controlplanenode:/var/snap/microk8s/current/credentials/proxy.config /tmp/proxy.config
 
 #copy the files to the worker nodes
 scp /tmp/ca.crt root@workernode:/var/snap/microk8s/current/certs/ca.crt
@@ -133,7 +184,7 @@ microk8s-worker-cetacean-0     Ready,SchedulingDisabled   <none>   6h      v1.20
 worker-0                       Ready                      <none>   4h42m   v1.20.2-34+350770ed07a558   178.128.24.42    <none>        Ubuntu 20.04.1 LTS   5.4.0-51-generic   containerd://1.3.7
 ```
 
-Below shows the utilization of kubelet and kube-proxy.  Running on a 1 CPU and 2 GB VM.
+Below shows the utilization of kubelet and kube-proxy.  Running on a 1 CPU and 2 GB VM.  As you can see, the node is very much dedicated to your workloads and not kubernetes.
 
 ![Utilization](docs/assets/worker-1.png)
 

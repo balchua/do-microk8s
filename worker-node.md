@@ -188,3 +188,6 @@ Below shows the utilization of kubelet and kube-proxy.  Running on a 1 CPU and 2
 
 ![Utilization](docs/assets/worker-1.png)
 
+Compare that to a control plane node resource usage.
+
+![controlplane|690x158](docs/assets/controlplane.png) 

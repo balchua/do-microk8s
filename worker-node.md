@@ -217,14 +217,12 @@ From the file `/var/snap/microk8s/current/args/kubelet`  add at the bottom of th
 --cluster-dns=10.152.183.10
 ```
 
-There's one last file you need to create on each worker node.  You need to create a file called `
-/var/snap/microk8s/current/var/lock/clustered.lock`. The importance of this file is to make sure that the control plane services such as apiserver, controller manager and scheduler do not start when the snap is updated or when you do a `microk8s stop` and `microk8s start`.
-
 ### Start the Kubelet and Kube-proxy
+
 
 #### Prevent the control plane from starting 
 
-The procedure above will not prevent the control plane from starting when the node is restarted or when the snap is refreshed.
+The procedure below will prevent the control plane from starting when the node is restarted or when the snap is refreshed.
 
 Create a file `/var/snap/microk8s/current/var/lock/clustered.lock` on each worker node.
 

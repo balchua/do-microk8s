@@ -357,10 +357,10 @@ EOF
 
 ```
 $ microk8s kubectl get pods -o wide
-NAME          READY   STATUS    RESTARTS   AGE     IP           NODE                         NOMINATED NODE   READINESS GATES
-volume-test   1/1     Running   0          2m56s   10.1.39.13   microk8s-worker-cetacean-0   <none>           <none>
+NAME                    READY   STATUS    RESTARTS   AGE     IP           NODE                         NOMINATED NODE   READINESS GATES
+security-context-demo   1/1     Running   0          2m56s   10.1.39.13   microk8s-worker-cetacean-0   <none>           <none>
 
-$ microk8s kubectl exec -it volume-test -- sh
+$ microk8s kubectl exec -it security-context-demo -- sh
 / # cd /data
 /data # pwd
 /data

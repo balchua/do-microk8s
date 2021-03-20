@@ -1,7 +1,7 @@
 module "microk8s" {
   #source = "git::https://github.com/balchua/do-microk8s?ref=v0.1.0"
   source                       = "../"
-  node_count                   = "7"
+  node_count                   = "10"
   os_image                     = "ubuntu-20-04-x64"
   node_size                    = "s-2vcpu-4gb"
   node_disksize                = "2"

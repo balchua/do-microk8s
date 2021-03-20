@@ -18,7 +18,7 @@ resource "digitalocean_loadbalancer" "microk8s-lb" {
     protocol = "tcp"
   }
 
-  droplet_tag = digitalocean_tag.microk8s-controlplane.id
+  droplet_tag = digitalocean_tag.microk8s-node.id
 }
 
 resource "digitalocean_record" "microk8s-cluster" {

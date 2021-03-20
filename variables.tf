@@ -17,7 +17,7 @@ variable "cluster_token_ttl_seconds" {
     description = "The cluster token ttl to use when joining a node, default 3600 seconds."
 }
 
-variable "worker_node_count" {
+variable "node_count" {
   type        = number
   default     = 3
   description = "Number of workers"
@@ -41,28 +41,16 @@ variable "region" {
     description = "The region where the droplets will be hosted."
 }
 
-variable "controller_size" {
-    type    = string
-    default = "s-4vcpu-8gb"
-    description = "The size of the controller droplet."
-}
-
-variable "controller_disksize" {
+variable "node_disksize" {
     type    = string
     default = "100"
     description = "The size of the controller storage."
 }
 
-variable "worker_size" {
+variable "node_size" {
     type    = string
     default = "s-4vcpu-8gb"
     description = "The size of the worker droplet."
-}
-
-variable "worker_disksize" {
-    type    = string
-    default = "100"
-    description = "The size of the worker storage."
 }
 
 variable "cluster_name" {

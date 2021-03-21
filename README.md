@@ -29,22 +29,22 @@ module "microk8s" {
 
 ```
 
-| Fields                        | Description                              | 
-| ----------------------------- |:-----------------------------------------|
-| source                        | The source of the terraform module       |
-| node_count                    | The number of MicroK8s nodes to create   |
-| os_image                      | DigitalOcean OS images.  <br/>To get the list OS images `doctl compute image list-distribution`|
-| node_size                     | DigitalOcean droptlet sizes <br/> To get the list of droplet sizes `doctl compute size list`|
-| node_disksize                 | Additional volume to add to the droplet.  Size in GB| |
-| region                        | DigitalOcean region <br/> To get the list of regions `doctl compute region list`|
-| dns_zone                      | The DNS zone representing your site.  Need to register your domain. |
-| microk8s_channel              | Specify the MicroK8s channel to use.  Refer [here](https://snapcraft.io/microk8s)|
-| cluster_token                 | The bootstrap token to use when joining nodes together, must be 32 alphanumeric characters long.|
-| cluster_token_ttl_seconds     | How long the token validity (in seconds)|
-| digitalocean_ssh_fingerprint  | Your DigitalOcean SSH fingerprint to use, so you can seemlessly `ssh` into your nodes|
-| digitalocean_private_key      | The private key location to use when connecting to your droplets|
-| digitalocean_token            | Your DigitalOcean token|
-| digitalocean_pub_key          | The public key to use to connect to the droplet|
+| Fields                        | Description                              | Default values |
+| ----------------------------- |:-----------------------------------------| -------------- |
+| source                        | The source of the terraform module       | none
+| node_count                    | The number of MicroK8s nodes to create   | 3
+| os_image                      | DigitalOcean OS images.  <br/>To get the list OS images `doctl compute image list-distribution`| ubuntu-18-04-x64
+| node_size                     | DigitalOcean droptlet sizes <br/> To get the list of droplet sizes `doctl compute size list`| s-4vcpu-8gb
+| node_disksize                 | Additional volume to add to the droplet.  Size in GB| 100 |
+| region                        | DigitalOcean region <br/> To get the list of regions `doctl compute region list`| sgp1
+| dns_zone                      | The DNS zone representing your site.  Need to register your domain. | geeks.sg
+| microk8s_channel              | Specify the MicroK8s channel to use.  Refer [here](https://snapcraft.io/microk8s)| stable
+| cluster_token                 | The bootstrap token to use when joining nodes together, must be 32 alphanumeric characters long.| none
+| cluster_token_ttl_seconds     | How long the token validity (in seconds)| 3600
+| digitalocean_ssh_fingerprint  | Your DigitalOcean SSH fingerprint to use, so you can seemlessly `ssh` into your nodes| Refer to `TF` environment variables
+| digitalocean_private_key      | The private key location to use when connecting to your droplets| Refer to `TF` environment variables
+| digitalocean_token            | Your DigitalOcean token| Refer to `TF` environment variables
+| digitalocean_pub_key          | The public key to use to connect to the droplet| Refer to `TF` environment variables
 
 
 ## DigitalOcean TF environment variables

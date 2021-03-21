@@ -11,7 +11,7 @@ For example to bootstrap a 7 node cluster.
 ```hcl
 
 module "microk8s" {
-  source = "git::https://github.com/balchua/do-microk8s?ref=master"
+  source                       = "git::https://github.com/balchua/do-microk8s?ref=master"
   node_count                   = "7"
   os_image                     = "ubuntu-20-04-x64"
   node_size                    = "s-4vcpu-8gb"
@@ -29,7 +29,23 @@ module "microk8s" {
 
 ```
 
-**The `cluster_token` must be 32 alphanumeric characters long.**
+| Fields                        | Description                              | 
+| ----------------------------- |:-----------------------------------------|
+| source                        | The source of the terraform module       |
+| node_count                    | The number of MicroK8s nodes to create   |
+| os_image                      | DigitalOcean OS images.  <br/>To get the list OS images `doctl compute image list-distribution`|
+| node_size                     | DigitalOcean droptlet sizes <br/> To get the list of droplet sizes `doctl compute size list`|
+| node_disksize                 | Additional volume to add to the droplet.  Size in GB| |
+| region                        | DigitalOcean region <br/> To get the list of regions `doctl compute region list`|
+| dns_zone                      | The DNS zone representing your site.  Need to register your domain. |
+| microk8s_channel              | Specify the MicroK8s channel to use.  Refer [here](https://snapcraft.io/microk8s)|
+| cluster_token                 | The bootstrap token to use when joining nodes together, must be 32 alphanumeric characters long.|
+| cluster_token_ttl_seconds     | How long the token validity (in seconds)|
+| digitalocean_ssh_fingerprint  | Your DigitalOcean SSH fingerprint to use, so you can seemlessly `ssh` into your nodes|
+| digitalocean_private_key      | The private key location to use when connecting to your droplets|
+| digitalocean_token            | Your DigitalOcean token|
+| digitalocean_pub_key          | The public key to use to connect to the droplet|
+
 
 ## DigitalOcean TF environment variables
 

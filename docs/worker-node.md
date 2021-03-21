@@ -264,10 +264,10 @@ mk8s-cp-03   Ready,SchedulingDisabled   <none>   6d23h   v1.20.2-36+a377b7383d34
 
 Below shows the utilization of kubelet and kube-proxy.  Running on a 1 CPU and 2 GB VM.  As you can see, the node is very much dedicated to your workloads and not kubernetes.
 
-![Utilization](docs/assets/worker-1.png)
+![Utilization](assets/worker-1.png)
 
 Compare that to a control plane node resource usage.
 
-![controlplane|690x158](docs/assets/controlplane.png) 
+![controlplane|690x158](assets/controlplane.png) 
 
 Now you can run MicroK8s on a resource constrained environment. Profit!!!

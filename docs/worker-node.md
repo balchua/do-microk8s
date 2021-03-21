@@ -1,3 +1,5 @@
+# Setting up traditional worker node only node
+
 This document describes the steps on how to join a worker node only into your Highly Available MicroK8s.  
 
 This has the main advantage that, you can avoid the resource overhead of the control plane.  The overhead can go up to GBs and several CPU cycles.  These cycles are best allocated to your workload instead of Kubernetes.
@@ -15,7 +17,7 @@ Follow the instructions in MicroK8s [documentation](https://microk8s.io/docs/hig
 
 **Follow the steps below, if you need to use a cloud provider load balancer**
 
-On each of your HA MicroK8s node, add the load balancer IP into the file `/var/snap/microk8s/current/certs/cs.conf.template`
+On each of your HA MicroK8s node, add the load balancer IP into the file `/var/snap/microk8s/current/certs/csr.conf.template`
 
 For example:
 

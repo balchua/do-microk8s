@@ -117,3 +117,7 @@ Some instructions on how to use [Longhorn](docs/longhorn.md)
 ## Using OpenEBS
 
 Instructions on how to install [OpenEBS](docs/openebs.md)
+
+## Worker node only node
+
+If you want to create a worker node only node, refer to these [instructions](docs/worker-node.md)

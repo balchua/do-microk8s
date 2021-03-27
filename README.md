@@ -33,7 +33,7 @@ module "microk8s" {
 | ----------------------------- |:-----------------------------------------| -------------- |
 | source                        | The source of the terraform module       | none
 | node_count                    | The number of MicroK8s nodes to create   | 3
-| os_image                      | DigitalOcean OS images.  <br/>To get the list OS images `doctl compute image list-distribution`| ubuntu-18-04-x64
+| os_image                      | DigitalOcean OS images.  <br/>To get the list OS images `doctl compute image list-distribution`| ubuntu-20-04-x64
 | node_size                     | DigitalOcean droptlet sizes <br/> To get the list of droplet sizes `doctl compute size list`| s-4vcpu-8gb
 | node_disksize                 | Additional volume to add to the droplet.  Size in GB| 100 |
 | region                        | DigitalOcean region <br/> To get the list of regions `doctl compute region list`| sgp1

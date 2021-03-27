@@ -31,7 +31,7 @@ variable "dns_zone" {
 
 variable "os_image" {
     type    = string
-    default = "ubuntu-18-04-x64"
+    default = "ubuntu-20-04-x64"
     description = "The operating system slug name in Digitalocean."
 }
 
@@ -44,7 +44,7 @@ variable "region" {
 variable "node_disksize" {
     type    = string
     default = "100"
-    description = "The size of the controller storage."
+    description = "The size of the node extra disk storage."
 }
 
 variable "node_size" {

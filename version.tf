@@ -1,12 +1,12 @@
 terraform {
   required_version = "~> 0.14"
   required_providers {
-    template = "~> 2.1"
-    null     = "~> 2.1"
+    template = "~> 2.2"
+    null     = "~> 3.1"
 
     digitalocean = {
       source  = "digitalocean/digitalocean"
-      version = "~> 2.4.0"
+      version = "~> 2.6.0"
     }
   }
  

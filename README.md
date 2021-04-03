@@ -4,6 +4,8 @@
 
 **Use only with terraform v0.14**
 
+**Does not work when modifying the module after it is created.**
+
 Bootstrap a Highly Available MicroK8s cluster in DigitalOcean with Terraform.
 
 For example to bootstrap a 7 node cluster.

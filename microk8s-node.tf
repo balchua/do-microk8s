@@ -50,6 +50,11 @@ resource "null_resource" "setup_tokens" {
         timeout     = "2m"
     }
 
+    provisioner "local-exec" {
+        interpreter = ["bash", "-c"]
+        command = "echo \"1\" > /tmp/current_joining_node.txt"
+    }
+
     provisioner "file" {
         content     = templatefile("${path.module}/templates/add-node.sh", 
             {
@@ -79,7 +84,12 @@ resource "null_resource" "join_nodes" {
         type        = "ssh"
         private_key = file(var.digitalocean_private_key)
         timeout     = "20m"
-    }      
+    }  
+
+    provisioner "local-exec" {
+        interpreter = ["bash", "-c"]
+        command = "while [[ $(cat /tmp/current_joining_node.txt) != \"${count.index +1}\" ]]; do echo \"${count.index +1} is waiting...\";sleep 5;done"
+    }
 
     provisioner "file" {
         content     = templatefile("${path.module}/templates/join.sh", 
@@ -96,6 +106,10 @@ resource "null_resource" "join_nodes" {
             "sh /usr/local/bin/join.sh"
         ]
     }
+    provisioner "local-exec" {
+        interpreter = ["bash", "-c"]
+        command = "echo \"${count.index+2}\" > /tmp/current_joining_node.txt"
+    }    
 }
 
 

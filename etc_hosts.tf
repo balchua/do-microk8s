@@ -2,6 +2,9 @@
 
 resource "null_resource" "provision_node_hosts_file" {
   count = var.node_count
+  triggers = {
+    rerun = random_id.cluster_token.hex
+  }  
   connection {
         host        = element(digitalocean_droplet.microk8s-node.*.ipv4_address, count.index)
         user        = "root"

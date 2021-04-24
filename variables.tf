@@ -6,11 +6,6 @@ variable "digitalocean_pub_key" {}
 
 variable "digitalocean_private_key" {}
 
-variable "cluster_token" {
-    type    = string
-    description = "The cluster token to use to join a node.  Must be 32 alphanumeric long." 
-}
-
 variable "cluster_token_ttl_seconds" {
     type    = number
     default = 3600

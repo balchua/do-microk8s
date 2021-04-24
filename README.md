@@ -4,7 +4,9 @@
 
 **Use only with terraform v0.14**
 
-**Does not work when modifying the module after it is created.**
+~~Does not work when modifying the module after it is created.~~
+**Adding a new node now works**
+**Warning Reducing nodes still does not leave the cluster**
 
 Bootstrap a Highly Available MicroK8s cluster in DigitalOcean with Terraform.
 
@@ -21,7 +23,6 @@ module "microk8s" {
   region                       = "sgp1"
   dns_zone                     = "geeks.sg"
   microk8s_channel             = "latest/edge"
-  cluster_token                = "PoiuyTrewQasdfghjklMnbvcxz123409"
   cluster_token_ttl_seconds    = 3600
   digitalocean_ssh_fingerprint = var.digitalocean_ssh_fingerprint
   digitalocean_private_key     = var.digitalocean_private_key
@@ -41,7 +42,6 @@ module "microk8s" {
 | region                        | DigitalOcean region <br/> To get the list of regions `doctl compute region list`| sgp1
 | dns_zone                      | The DNS zone representing your site.  Need to register your domain. | geeks.sg
 | microk8s_channel              | Specify the MicroK8s channel to use.  Refer [here](https://snapcraft.io/microk8s)| stable
-| cluster_token                 | The bootstrap token to use when joining nodes together, must be 32 alphanumeric characters long.| none
 | cluster_token_ttl_seconds     | How long the token validity (in seconds)| 3600
 | digitalocean_ssh_fingerprint  | Your DigitalOcean SSH fingerprint to use, so you can seemlessly `ssh` into your nodes| Refer to `TF` environment variables
 | digitalocean_private_key      | The private key location to use when connecting to your droplets| Refer to `TF` environment variables

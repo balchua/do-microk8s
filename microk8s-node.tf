@@ -1,3 +1,7 @@
+resource "random_id" "cluster_token" {
+  byte_length = 16
+}
+
 resource "digitalocean_volume" "microk8s-node" {
   region                  = var.region
   count                   = var.node_count
@@ -41,7 +45,10 @@ data "template_file" "node_config" {
 
 
 resource "null_resource" "setup_tokens" {
-    depends_on = [null_resource.provision_node_hosts_file]    
+    depends_on = [null_resource.provision_node_hosts_file]
+    triggers = {
+      rerun = random_id.cluster_token.hex
+    }
     connection {
         host        = digitalocean_droplet.microk8s-node[0].ipv4_address
         user        = "root"
@@ -59,7 +66,7 @@ resource "null_resource" "setup_tokens" {
         content     = templatefile("${path.module}/templates/add-node.sh", 
             {
                 dns_zone = var.dns_zone
-                cluster_token = var.cluster_token
+                cluster_token = random_id.cluster_token.hex
                 cluster_token_ttl_seconds = var.cluster_token_ttl_seconds
             })
         destination = "/usr/local/bin/add-node.sh"
@@ -78,6 +85,9 @@ resource "null_resource" "setup_tokens" {
 resource "null_resource" "join_nodes" {
     count           = var.node_count - 1 < 1 ? 0 : var.node_count - 1
     depends_on      = [null_resource.setup_tokens]
+    triggers = {
+      rerun = random_id.cluster_token.hex
+    }    
     connection {
         host        = element(digitalocean_droplet.microk8s-node.*.ipv4_address, count.index + 1)
         user        = "root"
@@ -95,7 +105,7 @@ resource "null_resource" "join_nodes" {
         content     = templatefile("${path.module}/templates/join.sh", 
             {
                 dns_zone = var.dns_zone
-                cluster_token = var.cluster_token
+                cluster_token = random_id.cluster_token.hex
                 main_node_ip = digitalocean_droplet.microk8s-node[0].ipv4_address_private
             })
         destination = "/usr/local/bin/join.sh"
@@ -106,6 +116,7 @@ resource "null_resource" "join_nodes" {
             "sh /usr/local/bin/join.sh"
         ]
     }
+
     provisioner "local-exec" {
         interpreter = ["bash", "-c"]
         command = "echo \"${count.index+2}\" > /tmp/current_joining_node.txt"

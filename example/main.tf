@@ -4,7 +4,7 @@ module "microk8s" {
   cluster_name                 = "hades"
   node_count                   = "3"
   os_image                     = "ubuntu-20-04-x64"
-  node_size                    = "s-1vcpu-2gb"
+  node_size                    = "s-2vcpu-4gb"
   node_disksize                = "2"
   region                       = "sgp1"
   dns_zone                     = "geeks.sg"

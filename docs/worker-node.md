@@ -79,27 +79,27 @@ In this step, we will use [`Traefik`](https://doc.traefik.io/) to load balance b
       address: ":16443"
   providers:
     file:
-      filename: /etc/traefik/providers.yaml
+      filename: /etc/traefik/provider.yaml
       watch: true
   ```
   Then configure the provider into the location `/etc/traefik/provider.yaml` (as shown above).
 
   ```yaml
   tcp:
-  routers:
-    Router-1:
-      # Listen to any SNI
-      rule: "HostSNI(`*`)"
-      service: "kube-apiserver"
-      tls:
-        passthrough: true
-  services:
-    kube-apiserver:
-      loadBalancer:
-        servers:
-        - address: "10.130.0.2:16443"
-        - address: "10.130.0.3:16443"
-        - address: "10.130.0.4:16443"
+    routers:
+      Router-1:
+        # Listen to any SNI
+        rule: "HostSNI(`*`)"
+        service: "kube-apiserver"
+        tls:
+          passthrough: true
+    services:
+      kube-apiserver:
+        loadBalancer:
+          servers:
+          - address: "10.130.0.2:16443"
+          - address: "10.130.0.3:16443"
+          - address: "10.130.0.4:16443"
   ```
 
   Each of the address represents the IP address and port of the apiservers.
@@ -155,12 +155,18 @@ On each of your **control plane** nodes, edit the file `/var/snap/microk8s/curre
 
 ```
 KzVIdjBkUWFNYStQc01xb09lMXM1VEFRUVAxSHIxQ3I5UHk5bjZiSVdidz0K,system:kube-proxy,kube-proxy
-KzVIdjBkUWFNYStQc01xb09lMXM1VEFRUVAxSHIxQ3I5UHk5bjZiSVdidz0K,system:node:worker-1,kubelet-1,"system:nodes"
+KzVIdjBkUWFNYStQc01xb09lMXM1VEFRUVAxSHIxQ3I5UHk5bjZiSVdidz0K,system:node:<YOUR_WORKER_HOSTNAME>,kubelet-1,"system:nodes"
 ```
 
-Restart each control plane api server.
+Restart each control plane api server:
+
+#### For versions 1.19 or 1.20
 
 `systemctl restart snap.microk8s.daemon-apiserver`
+
+#### For kubelite version
+
+`systemctl restart snap.microk8s.daemon-kubelite.service`
 
 ### Copy certificates to the worker node
 

@@ -59,7 +59,10 @@ resource "null_resource" "setup_tokens" {
 
     provisioner "local-exec" {
         interpreter = ["bash", "-c"]
-        command = "echo \"1\" > /tmp/current_joining_node.txt"
+        command = <<EOT
+        echo "1" > /tmp/current_joining_node.txt
+        echo "0" > /tmp/current_joining_worker_node.txt
+        EOT
     }
 
     provisioner "file" {

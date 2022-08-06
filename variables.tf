@@ -12,10 +12,16 @@ variable "cluster_token_ttl_seconds" {
     description = "The cluster token ttl to use when joining a node, default 3600 seconds."
 }
 
+variable "worker_node_count" {
+  type        = number
+  default     = 2
+  description = "Number of workers"
+}
+
 variable "node_count" {
   type        = number
   default     = 3
-  description = "Number of workers"
+  description = "Number of control plane"
 }
 
 variable "dns_zone" {
@@ -38,11 +44,23 @@ variable "region" {
 
 variable "node_disksize" {
     type    = string
-    default = "100"
+    default = "50"
     description = "The size of the node extra disk storage."
 }
 
+variable "worker_node_disksize" {
+    type    = string
+    default = "100"
+    description = "The size of the worker node extra disk storage."
+}
+
 variable "node_size" {
+    type    = string
+    default = "s-4vcpu-8gb"
+    description = "The size of the worker droplet."
+}
+
+variable "worker_node_size" {
     type    = string
     default = "s-4vcpu-8gb"
     description = "The size of the worker droplet."

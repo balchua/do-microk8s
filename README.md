@@ -1,7 +1,5 @@
 # DigitalOcean Terraform MicroK8s
 
-**This currently works for `1.19+` channel.**
-
 **Verfied using terraform v1.2.6**
 
 ~~Does not work when modifying the module after it is created.~~
@@ -12,12 +10,11 @@
 
 Bootstrap a Highly Available MicroK8s cluster in DigitalOcean with Terraform.
 
-For example to bootstrap a 7 node cluster.
+For example to bootstrap a 3 control plane nodes and 2 worker nodes cluster.
 
 ```hcl
 
 module "microk8s" {
-  #source = "git::https://github.com/balchua/do-microk8s?ref=v0.1.0"
   source                       = "../"
   cluster_name                 = "hades"
   node_count                   = "3"

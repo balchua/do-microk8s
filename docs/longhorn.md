@@ -44,7 +44,7 @@ microk8s helm3 repo update
 microk8s kubectl create namespace longhorn-system
 # for testing use "/tmp/longhorn" as storage location
 microk8s helm3 install longhorn longhorn/longhorn --namespace longhorn-system \
-  --set defaultSettings.defaultDataPath="/tmp/longhorn" \
+  --set defaultSettings.defaultDataPath="/longhorn" \
   --set csi.kubeletRootDir="/var/snap/microk8s/common/var/lib/kubelet"
 ```
 

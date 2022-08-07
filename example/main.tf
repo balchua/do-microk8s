@@ -6,7 +6,7 @@ module "microk8s" {
   worker_node_count            = "2"
   os_image                     = "ubuntu-20-04-x64"
   node_size                    = "s-2vcpu-4gb"
-  node_disksize                = "2"
+  node_disksize                = "20"
   region                       = "sgp1"
   dns_zone                     = "geeks.sg"
   microk8s_channel             = "latest/stable"

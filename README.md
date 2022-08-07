@@ -1,34 +1,39 @@
 # DigitalOcean Terraform MicroK8s
 
-**This currently works for `1.19+` channel.**
-
-**Use only with terraform v0.14**
+**Verfied using terraform v1.2.6**
 
 ~~Does not work when modifying the module after it is created.~~
 **Adding a new node now works**
+
 **Warning Reducing nodes still does not leave the cluster**
+
+**Support for worker only node, which means it will not run control plane components such as the api-server, scheduler and controller manager, available from MicroK8s v1.22**
 
 Bootstrap a Highly Available MicroK8s cluster in DigitalOcean with Terraform.
 
-For example to bootstrap a 7 node cluster.
+For example to bootstrap a 3 control plane nodes and 2 worker nodes cluster.
 
 ```hcl
 
 module "microk8s" {
-  source                       = "git::https://github.com/balchua/do-microk8s?ref=master"
-  node_count                   = "7"
+  source                       = "../"
+  cluster_name                 = "hades"
+  node_count                   = "3"
+  worker_node_count            = "2"
   os_image                     = "ubuntu-20-04-x64"
-  node_size                    = "s-4vcpu-8gb"
-  node_disksize                = "2"
+  node_size                    = "s-2vcpu-4gb"
+  worker_node_size             = "s-4vcpu-8gb"
+  node_disksize                = "30"
   region                       = "sgp1"
   dns_zone                     = "geeks.sg"
-  microk8s_channel             = "latest/edge"
+  microk8s_channel             = "latest/stable"
   cluster_token_ttl_seconds    = 3600
   digitalocean_ssh_fingerprint = var.digitalocean_ssh_fingerprint
   digitalocean_private_key     = var.digitalocean_private_key
   digitalocean_token           = var.digitalocean_token
   digitalocean_pub_key         = var.digitalocean_pub_key
 }
+
 
 ```
 
@@ -38,7 +43,7 @@ module "microk8s" {
 | node_count                    | The number of MicroK8s nodes to create   | 3
 | os_image                      | DigitalOcean OS images.  <br/>To get the list OS images `doctl compute image list-distribution`| ubuntu-20-04-x64
 | node_size                     | DigitalOcean droptlet sizes <br/> To get the list of droplet sizes `doctl compute size list`| s-4vcpu-8gb
-| node_disksize                 | Additional volume to add to the droplet.  Size in GB| 100 |
+| node_disksize                 | Additional volume to add to the droplet.  Size in GB| 50 |
 | region                        | DigitalOcean region <br/> To get the list of regions `doctl compute region list`| sgp1
 | dns_zone                      | The DNS zone representing your site.  Need to register your domain. | geeks.sg
 | microk8s_channel              | Specify the MicroK8s channel to use.  Refer [here](https://snapcraft.io/microk8s)| stable
@@ -47,6 +52,9 @@ module "microk8s" {
 | digitalocean_private_key      | The private key location to use when connecting to your droplets| Refer to `TF` environment variables
 | digitalocean_token            | Your DigitalOcean token| Refer to `TF` environment variables
 | digitalocean_pub_key          | The public key to use to connect to the droplet| Refer to `TF` environment variables
+| worker_node_size              | The worker node size example: `s-4vcpu-8gb` | s-4vcpu-8gb
+| worker_node_count             | The number of MicroK8s worker nodes | 2
+| worker_node_disksize          | Additional volume to add to the droplet.  Size in GB| 100 |
 
 
 ## DigitalOcean TF environment variables

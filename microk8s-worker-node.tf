@@ -33,10 +33,10 @@ resource "digitalocean_tag" "microk8s-worker" {
 
 
 resource "null_resource" "join_workers" {
-    count           = var.worker_node_count
-    depends_on      = [null_resource.setup_tokens]
-    triggers = {
-      rerun = random_id.cluster_token.hex
+  count      = var.worker_node_count
+  depends_on = [null_resource.setup_tokens, null_resource.join_nodes]
+  triggers = {
+    rerun = random_id.cluster_token.hex
     }    
     connection {
         host        = element(digitalocean_droplet.microk8s-worker-node.*.ipv4_address, count.index)

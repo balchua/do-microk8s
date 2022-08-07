@@ -4,6 +4,7 @@
 
 ~~Does not work when modifying the module after it is created.~~
 **Adding a new node now works**
+
 **Warning Reducing nodes still does not leave the cluster**
 
 **Support for worker only node, which means it will not run control plane components such as the api-server, scheduler and controller manager, available from MicroK8s v1.22**

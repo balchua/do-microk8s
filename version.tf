@@ -1,5 +1,4 @@
 terraform {
-  required_version = "~> 0.14"
   required_providers {
     template = "~> 2.2"
     null     = "~> 3.1"
